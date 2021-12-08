@@ -73,5 +73,13 @@ namespace courseProject
 			command.CommandText = @"SELECT * IN students WHERE score < @score";
 			command.Parameters.AddWithValue("@score", score);
 		}
+
+		public void FindByGreaterScore(double score)
+		{
+			connection.Open();
+			MySqlCommand command = connection.CreateCommand();
+			command.CommandText = @"SELECT * IN students WHERE score >= @score";
+			command.Parameters.AddWithValue("@score", score);
+		}
 	}
 }
