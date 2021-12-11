@@ -25,7 +25,7 @@ namespace courseProject
 			};
 		}
 
-		public bool Insert(Subject s)
+		/*public bool Insert(Subject s)
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
@@ -34,7 +34,7 @@ namespace courseProject
 			s.id = (long)command.ExecuteScalar();
 			connection.Close();
 			return (s.id != 0);
-		}
+		}*/
 
 		public bool Delete(Subject s)
 		{

@@ -30,13 +30,14 @@ namespace courseProject
 
 		public bool Insert(Student s)
 		{
-			connection.Open();
+			connection.Open(); 
 			MySqlCommand command = connection.CreateCommand();
 			command.CommandText = @"INSERT INTO students (first_name, last_name, age) VALUES (@first_name, @last_name, @age)";
 			command.Parameters.AddWithValue("@first_name", s.firstName);
 			command.Parameters.AddWithValue("@last_name", s.lastName);
 			command.Parameters.AddWithValue("@age", s.age);
 			s.id = (long)command.ExecuteScalar();
+			MySqlDataReader reader = command.ExecuteReader();
 			connection.Close();
 			return (s.id != 0);
 		}
@@ -66,7 +67,7 @@ namespace courseProject
 			return (nChanged != 0);
 		}
 
-		public void FindByLesserScore(double score)
+		/*public void FindByLesserScore(double score)
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
@@ -80,6 +81,36 @@ namespace courseProject
 			MySqlCommand command = connection.CreateCommand();
 			command.CommandText = @"SELECT * IN students WHERE score >= @score";
 			command.Parameters.AddWithValue("@score", score);
+		}*/
+
+		public string GetTheBest()
+		{
+			connection.Open();
+			MySqlCommand command = connection.CreateCommand();
+			command.CommandText = @"SELECT * IN students WHERE score > 9";
+			MySqlDataReader reader = command.ExecuteReader();
+			List<Student> students = new List<Student>();
+			
+			while (reader.Read())
+			{
+				students.Add(GetStudent(reader));
+			}
+			List<List<Teacher>> lists = new List<List<Teacher>>();
+			foreach (Student s in students)
+			{
+				lists.Add(s.teachers);
+			}
+			var common = lists.First().AsEnumerable();
+			foreach (var list in lists.Skip(1))
+			{
+				common = common.Intersect(list);
+			}
+			string result = "";
+			foreach (Teacher t in common)
+			{
+				result += t.ToString() + "\r\n";
+			}
+			return result;
 		}
 	}
 }

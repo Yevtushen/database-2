@@ -14,7 +14,7 @@ namespace courseProject
 		public int age;
 		public double averageScore;
 		
-		public List<Subject> subjects;
+		public List<Teacher> teachers;
 
 		public Student()
 		{
@@ -23,12 +23,12 @@ namespace courseProject
 			lastName = "";
 			age = 0;
 			averageScore = 0;
-			subjects = new List<Subject>();
+			teachers = new List<Teacher>();
 		}
 
 		public override string ToString()
 		{
-			return $"#{id}: {firstName} {lastName}, {age} -- ";
+			return $"#{id}: {firstName} {lastName}, {age}";
 		}
 	}
 }
