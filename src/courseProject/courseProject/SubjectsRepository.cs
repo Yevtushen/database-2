@@ -25,16 +25,24 @@ namespace courseProject
 			};
 		}
 
-		/*public bool Insert(Subject s)
+		public bool Insert(Subject s)
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"INSERT INTO subjects (name) VALUES (@name)";
+			command.CommandText = @"SELECT * FROM subjects WHERE name = @name";
 			command.Parameters.AddWithValue("@name", s.name);
-			s.id = (long)command.ExecuteScalar();
+			MySqlDataReader reader = command.ExecuteReader();
+			if (reader.Read())
+			{
+				return false;
+			}
+			MySqlCommand command1 = connection.CreateCommand();
+			command1.CommandText = @"INSERT INTO subjects (name) VALUES (@name)";
+			command1.Parameters.AddWithValue("@name", s.name);
+			s.id = (long)command1.ExecuteScalar();
 			connection.Close();
 			return (s.id != 0);
-		}*/
+		}
 
 		public bool Delete(Subject s)
 		{

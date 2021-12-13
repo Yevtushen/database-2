@@ -30,14 +30,25 @@ namespace courseProject
 
 		public bool Insert(Student s)
 		{
-			connection.Open(); 
+			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"INSERT INTO students (first_name, last_name, age) VALUES (@first_name, @last_name, @age)";
+			command.CommandText = @"SELECT * FROM students WHERE first_name = @first_name, last_name = @last_name; age = @age, average_score = @average_score";
 			command.Parameters.AddWithValue("@first_name", s.firstName);
 			command.Parameters.AddWithValue("@last_name", s.lastName);
 			command.Parameters.AddWithValue("@age", s.age);
-			s.id = (long)command.ExecuteScalar();
+			command.Parameters.AddWithValue("@average_score", s.averageScore);
 			MySqlDataReader reader = command.ExecuteReader();
+			if (reader.Read())
+			{
+				return false;
+			}
+			MySqlCommand command1 = connection.CreateCommand();
+			command1.CommandText = @"INSERT INTO students (first_name, last_name, age, average_score) VALUES (@first_name, @last_name, @age, @average_score)";
+			command1.Parameters.AddWithValue("@first_name", s.firstName);
+			command1.Parameters.AddWithValue("@last_name", s.lastName);
+			command1.Parameters.AddWithValue("@age", s.age);
+			command1.Parameters.AddWithValue("@average_score", s.averageScore);
+			s.id = (long)command1.ExecuteScalar();
 			connection.Close();
 			return (s.id != 0);
 		}
@@ -110,6 +121,7 @@ namespace courseProject
 			{
 				result += t.ToString() + "\r\n";
 			}
+
 			return result;
 		}
 	}
