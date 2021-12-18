@@ -20,9 +20,20 @@ namespace courseProject
 		{
 			return new Subject
 			{
-				id = (long)reader["id"],
+				id = (int)reader["id"],
 				name = (string)reader["name"],
 			};
+		}
+
+		public Subject GetActualSubject(int id)
+		{
+			connection.Open();
+			MySqlCommand command = connection.CreateCommand();
+			command.CommandText = @"SELECT * FROM subjects WHERE id = @id";
+			command.Parameters.AddWithValue("@id", id);
+			MySqlDataReader reader = command.ExecuteReader();
+			reader.Read();
+			return GetSubject(reader);
 		}
 
 		public bool Insert(Subject s)
@@ -39,18 +50,18 @@ namespace courseProject
 			MySqlCommand command1 = connection.CreateCommand();
 			command1.CommandText = @"INSERT INTO subjects (name) VALUES (@name)";
 			command1.Parameters.AddWithValue("@name", s.name);
-			s.id = (long)command1.ExecuteScalar();
+			s.id = (int)command1.ExecuteScalar();
 			connection.Close();
 			return (s.id != 0);
 		}
 
-		public bool Delete(Subject s)
+		public bool Delete(int id)
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
 			command.CommandText = @"DELETE FROM students WHERE id = @id";
-			command.Parameters.AddWithValue("@id", s.id);
-			long nChanged = command.ExecuteNonQuery();
+			command.Parameters.AddWithValue("@id", id);
+			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);
 		}
@@ -62,7 +73,7 @@ namespace courseProject
 			command.CommandText = @"UPDATE students SET name = @name WHERE id = @id";
 			command.Parameters.AddWithValue("@name", s.name);
 			command.Parameters.AddWithValue("@id", s.id);
-			long nChanged = command.ExecuteNonQuery();
+			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);
 		}

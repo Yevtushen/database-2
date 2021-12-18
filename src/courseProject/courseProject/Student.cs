@@ -8,7 +8,7 @@ namespace courseProject
 {
 	class Student
 	{
-		public long id;
+		public int id;
 		public string firstName;
 		public string lastName;
 		public int age;

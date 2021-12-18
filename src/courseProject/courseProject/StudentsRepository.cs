@@ -20,12 +20,23 @@ namespace courseProject
 		{
 			return new Student
 			{
-				id = (long)reader["id"],
+				id = (int)reader["id"],
 				firstName = (string)reader["first_name"],
 				lastName = (string)reader["last_name"],
 				age = (int)reader["age"],
 				averageScore = (double)reader["average_score"]
 			};
+		}
+
+		public Student GetActualStudent(int id)
+		{
+			connection.Open();
+			MySqlCommand command = connection.CreateCommand();
+			command.CommandText = @"SELECT * FROM students WHERE id = @id";
+			command.Parameters.AddWithValue("@id", id);
+			MySqlDataReader reader = command.ExecuteReader();
+			reader.Read();
+			return GetStudent(reader);
 		}
 
 		public bool Insert(Student s)
@@ -48,18 +59,18 @@ namespace courseProject
 			command1.Parameters.AddWithValue("@last_name", s.lastName);
 			command1.Parameters.AddWithValue("@age", s.age);
 			command1.Parameters.AddWithValue("@average_score", s.averageScore);
-			s.id = (long)command1.ExecuteScalar();
+			s.id = (int)command1.ExecuteScalar();
 			connection.Close();
 			return (s.id != 0);
 		}
 
-		public bool Delete(Student s)
+		public bool Delete(int id)
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
 			command.CommandText = @"DELETE FROM students WHERE id = @id";
-			command.Parameters.AddWithValue("@id", s.id);
-			long nChanged = command.ExecuteNonQuery();
+			command.Parameters.AddWithValue("@id", id);
+			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);
 		}
@@ -73,7 +84,11 @@ namespace courseProject
 			command.Parameters.AddWithValue("@last_name", s.lastName);
 			command.Parameters.AddWithValue("@age", s.age);
 			command.Parameters.AddWithValue("@id", s.id);
-			long nChanged = command.ExecuteNonQuery();
+			/*command.CommandText = @"UPDATE students SET @column = @parameter WHERE id = @id";
+			command.Parameters.AddWithValue("@column", column);
+			command.Parameters.AddWithValue("@parameter", parameter);
+			command.Parameters.AddWithValue("@id", id);*/
+			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);
 		}

@@ -20,11 +20,22 @@ namespace courseProject
 		{
 			return new Teacher
 			{
-				id = (long)reader["id"],
+				id = (int)reader["id"],
 				firstName = (string)reader["first_name"],
 				lastName = (string)reader["last_name"],
-				subjectId = (long)reader["subject_id"]
+				subjectId = (int)reader["subject_id"]
 			};
+		}
+
+		public Teacher GetActualTeacher(int id)
+		{
+			connection.Open();
+			MySqlCommand command = connection.CreateCommand();
+			command.CommandText = @"SELECT * FROM teachers WHERE id = @id";
+			command.Parameters.AddWithValue("@id", id);
+			MySqlDataReader reader = command.ExecuteReader();
+			reader.Read();
+			return GetTeacher(reader);
 		}
 
 		public bool Insert(Teacher t)
@@ -45,18 +56,18 @@ namespace courseProject
 			command1.Parameters.AddWithValue("@first_name", t.firstName);
 			command1.Parameters.AddWithValue("@last_name", t.lastName);
 			command1.Parameters.AddWithValue("@subject_id", t.subjectId);
-			t.id = (long)command1.ExecuteScalar();
+			t.id = (int)command1.ExecuteScalar();
 			connection.Close();
 			return (t.id != 0);
 		}
 
-		public bool Delete(Teacher t)
+		public bool Delete(int id)
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
 			command.CommandText = @"DELETE FROM teachers WHERE id = @id";
-			command.Parameters.AddWithValue("@id", t.id);
-			long nChanged = command.ExecuteNonQuery();
+			command.Parameters.AddWithValue("@id", id);
+			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);
 		}
@@ -70,7 +81,7 @@ namespace courseProject
 			command.Parameters.AddWithValue("@last_name", t.lastName);
 			command.Parameters.AddWithValue("@subject_id", t.subjectId);
 			command.Parameters.AddWithValue("@id", t.id);
-			long nChanged = command.ExecuteNonQuery();
+			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);
 		}

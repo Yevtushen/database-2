@@ -8,15 +8,6 @@ namespace courseProject
 	{
 		static void Main(string[] args)
 		{
-			var builder = new MySqlConnectionStringBuilder
-			{
-				Server = "localhost",
-				UserID = "root",
-				Password = "qwerty",
-				Database = "schooldb"
-		};
-
-			var conn = new MySqlConnection(builder.ConnectionString);
 			/*conn.Open();
 			MySqlCommand command = conn.CreateCommand();
 			command.CommandText = @"DELETE FROM students WHERE id = @id";
@@ -27,8 +18,20 @@ namespace courseProject
 			command.Parameters.AddWithValue("@age", 19);*//*
 			//command.ExecuteScalar();
 			conn.Close();*/
+			//StudentsRepository studentsRepository = new StudentsRepository(GetConnection());
 
 		}
 
+		public static MySqlConnection GetConnection()
+		{
+			var builder = new MySqlConnectionStringBuilder
+			{
+				Server = "localhost",
+				UserID = "root",
+				Password = "qwerty",
+				Database = "schooldb"
+			};
+			return new MySqlConnection(builder.ConnectionString);
+		}
 	}
 }
