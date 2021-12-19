@@ -55,47 +55,64 @@ namespace courseProject
 		public static void StudentsCommandsProceduring()
 		{
 			string command = Console.ReadLine();
-			switch(command)
+			string[] subcomms = command.Split(' ');
+			bool check = int.TryParse(subcomms[1], out int id);
+			if (subcomms[0] == "insert")
 			{
-				case "show":
 
-					break;
-				case "insert":
+			}
+			if (check)
+			{
+				switch (subcomms[0])
+				{
+					case "show":
+						ShowStudent(id);
+						break;
+					case "update":
 
-					break;
-				case "update":
-
-					break;
-				case "delete":
-
-					break;
-				default:
-					Console.Error.WriteLine("Unknown command");
-					break;
+						break;
+					case "delete":
+						DeleteStudent(id);
+						break;
+					default:
+						Console.Error.WriteLine("Unknown command");
+						break;
+				}
+			}
+			else
+			{
+				Console.Error.WriteLine("Unknown command");
 			}
 		}
 
 		public static void TeachersCommandsProceduring()
 		{
 			string command = Console.ReadLine();
-			switch (command)
+			string[] subcomms = command.Split(' ');
+			bool check = int.TryParse(subcomms[1], out int id);
+			if (subcomms[0] == "insert")
 			{
-				case "show":
 
-					break;
-				case "insert":
-
-					break;
-				case "update":
-
-					break;
-				case "delete":
-
-					break;
-				default:
-					Console.Error.WriteLine("Unknown command");
-					break;
 			}
+			if (check)
+			{
+				switch (command)
+				{
+					case "show":
+						ShowTeacher(id);
+						break;
+					case "update":
+
+						break;
+					case "delete":
+						DeleteTeacher(id);
+						break;
+					default:
+						Console.Error.WriteLine("Unknown command");
+						break;
+				}
+			}
+			
 		}
 
 		public static void SubjectsCommandsProceduring()
@@ -116,6 +133,19 @@ namespace courseProject
 					Console.Error.WriteLine("Unknown command");
 					break;
 			}
+		}
+
+		public static void ShowStudent(int id)
+		{
+			studentsRepository.GetActualStudent(id);
+		}
+		public static void ShowTeacher(int id)
+		{
+			teachersRepository.GetActualTeacher(id);
+		}
+		public static void ShowSubjects()
+		{
+			subjectsRepository.GetSubjects();
 		}
 
 		public static bool InsertStudent(Student s)

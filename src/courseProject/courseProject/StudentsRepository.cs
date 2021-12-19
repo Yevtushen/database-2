@@ -109,7 +109,7 @@ namespace courseProject
 			command.Parameters.AddWithValue("@score", score);
 		}*/
 
-		public string GetTheBest()
+		public List<Teacher> GetTheBest()
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
@@ -131,13 +131,13 @@ namespace courseProject
 			{
 				common = common.Intersect(list);
 			}
-			string result = "";
+			List<Teacher> teachers = new List<Teacher>();
 			foreach (Teacher t in common)
 			{
-				result += t.ToString() + "\r\n";
+				teachers.Add(t);
 			}
 
-			return result;
+			return teachers;
 		}
 	}
 }

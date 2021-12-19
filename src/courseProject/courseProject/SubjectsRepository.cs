@@ -25,15 +25,18 @@ namespace courseProject
 			};
 		}
 
-		public Subject GetActualSubject(int id)
+		public List<Subject> GetSubjects()
 		{
 			connection.Open();
+			List<Subject> subjects = new List<Subject>();
 			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"SELECT * FROM subjects WHERE id = @id";
-			command.Parameters.AddWithValue("@id", id);
+			command.CommandText = @"SELECT * FROM subjects";
 			MySqlDataReader reader = command.ExecuteReader();
-			reader.Read();
-			return GetSubject(reader);
+			while(reader.Read())
+			{
+				subjects.Add(GetSubject(reader));
+			}
+			return subjects;
 		}
 
 		public bool Insert(Subject s)
