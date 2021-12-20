@@ -80,19 +80,24 @@ namespace courseProject
 			return (nChanged != 0);
 		}
 
-		public bool Update(Student s)
+		public bool UpdateAge(int id, int age)
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"UPDATE students SET first_name = @first_name, last_name = @last_name, age = @age WHERE id = @id";
-			command.Parameters.AddWithValue("@first_name", s.firstName);
-			command.Parameters.AddWithValue("@last_name", s.lastName);
-			command.Parameters.AddWithValue("@age", s.age);
-			command.Parameters.AddWithValue("@id", s.id);
-			/*command.CommandText = @"UPDATE students SET @column = @parameter WHERE id = @id";
-			command.Parameters.AddWithValue("@column", column);
-			command.Parameters.AddWithValue("@parameter", parameter);
-			command.Parameters.AddWithValue("@id", id);*/
+			command.CommandText = @"UPDATE students SET age = @age WHERE id = @id";
+			command.Parameters.AddWithValue("@age", age);
+			command.Parameters.AddWithValue("@id", id);
+			int nChanged = command.ExecuteNonQuery();
+			connection.Close();
+			return (nChanged != 0);
+		}
+		public bool UpdateGrade(int id, double averageScore)
+		{
+			connection.Open();
+			MySqlCommand command = connection.CreateCommand();
+			command.CommandText = @"UPDATE students SET average_score = @average_score WHERE id = @id";
+			command.Parameters.AddWithValue("@average_score", averageScore);
+			command.Parameters.AddWithValue("@id", id);
 			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);

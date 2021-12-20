@@ -77,15 +77,13 @@ namespace courseProject
 			return (nChanged != 0);
 		}
 
-		public bool Update(Teacher t)
+		public bool UpdateLastName(int id, string lastName)
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"UPDATE teachers SET first_name = @first_name, last_name = @last_name, subject_id = @subject_id WHERE id = @id";
-			command.Parameters.AddWithValue("@first_name", t.firstName);
-			command.Parameters.AddWithValue("@last_name", t.lastName);
-			command.Parameters.AddWithValue("@subject_id", t.subjectId);
-			command.Parameters.AddWithValue("@id", t.id);
+			command.CommandText = @"UPDATE teachers SET last_name = @last_name WHERE id = @id";
+			command.Parameters.AddWithValue("@last_name", lastName);
+			command.Parameters.AddWithValue("@id", id);
 			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);

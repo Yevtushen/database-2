@@ -57,22 +57,19 @@ namespace courseProject
 			string command = Console.ReadLine();
 			string[] subcomms = command.Split(' ');
 			bool check = int.TryParse(subcomms[1], out int id);
-			if (subcomms[0] == "insert")
-			{
-
-			}
+			
 			if (check)
 			{
 				switch (subcomms[0])
 				{
 					case "show":
-						ShowStudent(id);
+						View.ShowStudent(id);
 						break;
 					case "update":
-
+						View.UpdateStudent(id);
 						break;
 					case "delete":
-						DeleteStudent(id);
+						View.Expel(id);
 						break;
 					default:
 						Console.Error.WriteLine("Unknown command");
@@ -81,7 +78,18 @@ namespace courseProject
 			}
 			else
 			{
-				Console.Error.WriteLine("Unknown command");
+				switch (subcomms[0])
+				{
+					case "insert":
+						View.EnrollToSchool();
+						break;
+					case "generate":
+						View.GenerateStudents();
+						break;
+					default:
+						Console.Error.WriteLine("Unknown command");
+						break;
+				}
 			}
 		}
 
@@ -90,22 +98,70 @@ namespace courseProject
 			string command = Console.ReadLine();
 			string[] subcomms = command.Split(' ');
 			bool check = int.TryParse(subcomms[1], out int id);
-			if (subcomms[0] == "insert")
-			{
-
-			}
 			if (check)
 			{
-				switch (command)
+				switch (subcomms[0])
 				{
 					case "show":
-						ShowTeacher(id);
+						View.ShowTeacher(id);
 						break;
 					case "update":
-
+						View.MarryTeacher(id);
 						break;
 					case "delete":
-						DeleteTeacher(id);
+						View.FireTeacher(id);
+						break;
+					default:
+						Console.Error.WriteLine("Unknown command");
+						break;
+				}
+			}
+			else
+			{
+				switch (subcomms[0])
+				{
+					case "insert":
+						View.HireTeacher();
+						break;
+					case "generate":
+						View.GenerateTeachers();
+						break;
+					default:
+						Console.Error.WriteLine("Unknown command");
+						break;
+				}
+			}
+		}
+
+		public static void SubjectsCommandsProceduring()
+		{
+			string command = Console.ReadLine();
+			string[] subcomms = command.Split(' ');
+			bool check = int.TryParse(subcomms[1], out int id);
+			if (check)
+			{
+				switch (subcomms[0])
+				{
+					case "delete":
+						View.DeleteSubject(id);
+						break;
+					case "update":
+						View.UpdateSubject(id);
+						break;
+					default:
+						Console.Error.WriteLine("Unknown command");
+						break;
+				}
+			}
+			else
+			{
+				switch (subcomms[0])
+				{
+					case "insert":
+						View.AddSubject();
+						break;
+					case "show":
+						View.ShowSubjects();
 						break;
 					default:
 						Console.Error.WriteLine("Unknown command");
@@ -115,54 +171,26 @@ namespace courseProject
 			
 		}
 
-		public static void SubjectsCommandsProceduring()
+		public static Student ShowStudent(int id)
 		{
-			string command = Console.ReadLine();
-			switch (command)
-			{
-				case "show":
-
-					break;
-				case "delete":
-
-					break;
-				case "insert":
-
-					break;
-				default:
-					Console.Error.WriteLine("Unknown command");
-					break;
-			}
+			return studentsRepository.GetActualStudent(id);
 		}
-
-		public static void ShowStudent(int id)
+		public static Teacher ShowTeacher(int id)
 		{
-			studentsRepository.GetActualStudent(id);
+			return teachersRepository.GetActualTeacher(id);
 		}
-		public static void ShowTeacher(int id)
+		public static List<Subject> ShowSubjects()
 		{
-			teachersRepository.GetActualTeacher(id);
-		}
-		public static void ShowSubjects()
-		{
-			subjectsRepository.GetSubjects();
+			return subjectsRepository.GetSubjects();
 		}
 
 		public static bool InsertStudent(Student s)
 		{
-			if (s == null)
-			{
-				return studentsRepository.Insert(DataGenerator.GenerateStudent());
-			}
 			return studentsRepository.Insert(s);
 		}
 
 		public static bool InsertTeacher(Teacher t)
 		{
-			if (t == null)
-			{
-				return teachersRepository.Insert(DataGenerator.GenerateTeacher());
-			}
 			return teachersRepository.Insert(t);
 		}
 
@@ -186,19 +214,55 @@ namespace courseProject
 			return subjectsRepository.Delete(id);
 		}
 
-		public static bool UpdateStudent(Student s)
+		public static bool UpdateStudentsGrade(int id, double score)
 		{
-			return studentsRepository.Update(s);
+			return studentsRepository.UpdateGrade(id, score);
 		}
 
-		public static bool UpdateTeacher(Teacher t)
+		public static bool UpdateStudentsAge(int id, int age)
 		{
-			return teachersRepository.Update(t);
+			return studentsRepository.UpdateAge(id, age);
 		}
 
-		public static bool UpdateSubject(Subject s)
+		public static bool UpdateTeacher(int id, string lastName)
 		{
-			return subjectsRepository.Update(s);
+			return teachersRepository.UpdateLastName(id, lastName);
+		}
+
+		public static bool UpdateSubject(int id, string name)
+		{
+			return subjectsRepository.Update(id, name);
+		}
+
+		public static Subject FindSubject(string name)
+		{
+			return subjectsRepository.FindSubject(name);
+		}
+
+		public static void GenerateStudents(int numberOfStudents)
+		{
+			List<Student> students = new List<Student>();
+			for (int i = 0; i < numberOfStudents; i++)
+			{
+				students.Add(DataGenerator.GenerateStudent());
+			}
+			foreach (Student s in students)
+			{
+				studentsRepository.Insert(s);
+			}
+		}
+
+		public static void GenerateTeachers(int numberOfTeachers)
+		{
+			List<Teacher> teachers = new List<Teacher>();
+			for (int i = 0; i < numberOfTeachers; i++)
+			{
+				teachers.Add(DataGenerator.GenerateTeacher());
+			}
+			foreach (Teacher t in teachers)
+			{
+				teachersRepository.Insert(t);
+			}
 		}
 	}
 }

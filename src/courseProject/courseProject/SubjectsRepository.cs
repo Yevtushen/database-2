@@ -36,7 +36,24 @@ namespace courseProject
 			{
 				subjects.Add(GetSubject(reader));
 			}
+			connection.Close();
 			return subjects;
+		}
+
+		public Subject FindSubject(string name)
+		{
+			connection.Open();
+			Subject subject = new Subject();
+			MySqlCommand command = connection.CreateCommand();
+			command.CommandText = @"SELECT * FROM subjects WHERE name = @name";
+			command.Parameters.AddWithValue("@name", name);
+			MySqlDataReader reader = command.ExecuteReader();
+			if (reader.Read())
+			{
+				subject = GetSubject(reader);
+			}
+			connection.Close();
+			return subject;
 		}
 
 		public bool Insert(Subject s)
@@ -69,13 +86,13 @@ namespace courseProject
 			return (nChanged != 0);
 		}
 
-		public bool Update(Subject s)
+		public bool Update(int id, string name)
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
 			command.CommandText = @"UPDATE students SET name = @name WHERE id = @id";
-			command.Parameters.AddWithValue("@name", s.name);
-			command.Parameters.AddWithValue("@id", s.id);
+			command.Parameters.AddWithValue("@name", name);
+			command.Parameters.AddWithValue("@id", id);
 			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);
