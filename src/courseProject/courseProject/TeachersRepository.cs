@@ -34,8 +34,13 @@ namespace courseProject
 			command.CommandText = @"SELECT * FROM teachers WHERE id = @id";
 			command.Parameters.AddWithValue("@id", id);
 			MySqlDataReader reader = command.ExecuteReader();
-			reader.Read();
-			return GetTeacher(reader);
+			Teacher teacher = new Teacher();
+			if (reader.Read())
+			{
+				teacher = GetTeacher(reader);
+			}
+			connection.Close();
+			return teacher;
 		}
 
 		public bool Insert(Teacher t)

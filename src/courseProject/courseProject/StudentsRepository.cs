@@ -35,8 +35,13 @@ namespace courseProject
 			command.CommandText = @"SELECT * FROM students WHERE id = @id";
 			command.Parameters.AddWithValue("@id", id);
 			MySqlDataReader reader = command.ExecuteReader();
-			reader.Read();
-			return GetStudent(reader);
+			Student student = new Student();
+			if (reader.Read())
+			{
+				student = GetStudent(reader);
+			}
+			connection.Close();
+			return student;
 		}
 
 		public bool Insert(Student s)
@@ -113,7 +118,7 @@ namespace courseProject
 		{
 			connection.Open();
 			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"SELECT * IN students WHERE score > 9";
+			command.CommandText = @"SELECT * FROM students WHERE score > 9";
 			MySqlDataReader reader = command.ExecuteReader();
 			List<Student> students = new List<Student>();
 			
@@ -136,8 +141,23 @@ namespace courseProject
 			{
 				teachers.Add(t);
 			}
-
+			connection.Close();
 			return teachers;
+		}
+
+		public List<Student> GetAllStudents()
+		{
+			connection.Open();
+			MySqlCommand command = connection.CreateCommand();
+			command.CommandText = @"SELECT * FROM students";
+			MySqlDataReader reader = command.ExecuteReader();
+			List<Student> students = new List<Student>();
+			while (reader.Read())
+			{
+				students.Add(GetStudent(reader));
+			}
+			connection.Close();
+			return students;
 		}
 	}
 }
