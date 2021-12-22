@@ -11,31 +11,22 @@ namespace courseProject
 	{
 		static void Main(string[] args)
 		{
-			/*conn.Open();
+			/*MySqlConnection conn = Model.GetConnection();
+			conn.Open();
 			MySqlCommand command = conn.CreateCommand();
-			command.CommandText = @"DELETE FROM students WHERE id = @id";
-			command.Parameters.AddWithValue("@id", 2);
-			command.ExecuteNonQuery();
+			command.CommandText = @"INSERT INTO students (first_name, last_name, age, average_score) VALUES ('Harry', 'Potter', 7, 10.4)";
+			//command.Parameters.AddWithValue("@id", 2);
+			//command.ExecuteNonQuery();
 			*//*command.Parameters.AddWithValue("@first_name", "Vic");
 			command.Parameters.AddWithValue("@last_name", "Dev");
 			command.Parameters.AddWithValue("@age", 19);*//*
-			//command.ExecuteScalar();
+			command.ExecuteScalar();
 			conn.Close();*/
 			//StudentsRepository studentsRepository = new StudentsRepository(GetConnection());
 			//SubjectsRepository subjectsRepository = new SubjectsRepository(GetConnection());
-			
-		}
 
-		public static MySqlConnection GetConnection()
-		{
-			var builder = new MySqlConnectionStringBuilder
-			{
-				Server = "localhost",
-				UserID = "root",
-				Password = "qwerty",
-				Database = "schooldb"
-			};
-			return new MySqlConnection(builder.ConnectionString);
+			Console.WriteLine("Enter 'exit' if you want to leave or 'choose' if you want to start working with tables");
+			Controller.FirstCommandProcessing();
 		}
 	}
 }

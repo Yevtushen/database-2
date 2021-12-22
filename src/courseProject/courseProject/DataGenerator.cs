@@ -16,8 +16,8 @@ namespace courseProject
 			return new Student
 			{
 				id = 0,
-				firstName = GetRandomString("D:\\victo\\kpi\\database-2\\data\\first_names.txt"),
-				lastName = GetRandomString("D:\\victo\\kpi\\database-2\\data\\last_names.txt"),
+				firstName = FormatName(GetRandomString("D:\\victo\\kpi\\database-2\\data\\first_names.txt")),
+				lastName = FormatName(GetRandomString("D:\\victo\\kpi\\database-2\\data\\last_names.txt")),
 				age = randomForAge.Next(6, 19),
 				averageScore = randomForScore.Next(1, 13)
 
@@ -30,10 +30,21 @@ namespace courseProject
 			return new Teacher 
 			{
 				id = 0,
-				firstName = GetRandomString("D:\\victo\\kpi\\database-2\\data\\first_names.txt"),
-				lastName = GetRandomString("D:\\victo\\kpi\\database-2\\data\\last_names.txt"),
+				firstName = FormatName(GetRandomString("D:\\victo\\kpi\\database-2\\data\\first_names.txt")),
+				lastName = FormatName(GetRandomString("D:\\victo\\kpi\\database-2\\data\\last_names.txt")),
 				subjectId = randomForSubject.Next(1, 12)
 			};
+		}
+
+		private static string FormatName(string str)
+		{
+			if (str == null)
+				return null;
+
+			if (str.Length > 1)
+				return char.ToUpper(str[0]) + str.Substring(1);
+
+			return str.ToUpper();
 		}
 
 		private static string GetRandomString(string filePath)

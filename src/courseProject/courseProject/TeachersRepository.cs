@@ -46,24 +46,22 @@ namespace courseProject
 		public bool Insert(Teacher t)
 		{
 			connection.Open();
-			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"SELECT * FROM teachers WHERE first_name = @first_name, last_name = @last_name, subject_id = @subject_id";
-			command.Parameters.AddWithValue("@first_name", t.firstName);
-			command.Parameters.AddWithValue("@last_name", t.lastName);
-			command.Parameters.AddWithValue("@subject_id", t.subjectId);
-			MySqlDataReader reader = command.ExecuteReader();
-			if (reader.Read())
-			{
-				return false;
-			}
 			MySqlCommand command1 = connection.CreateCommand();
 			command1.CommandText = @"INSERT INTO teachers (first_name, last_name, subject_id) VALUES (@first_name, @last_name, @subject_id);";
 			command1.Parameters.AddWithValue("@first_name", t.firstName);
 			command1.Parameters.AddWithValue("@last_name", t.lastName);
 			command1.Parameters.AddWithValue("@subject_id", t.subjectId);
-			t.id = (int)command1.ExecuteScalar();
+			try
+			{
+				command1.ExecuteScalar();
+			}
+			catch (Exception ex)
+			{
+				connection.Close();
+				return false;
+			}
 			connection.Close();
-			return (t.id != 0);
+			return true;
 		}
 
 		public bool Delete(int id)

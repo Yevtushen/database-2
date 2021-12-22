@@ -8,9 +8,9 @@ namespace courseProject
 {
 	class Controller
 	{
-		public static StudentsRepository studentsRepository = new StudentsRepository(Program.GetConnection());
-		public static TeachersRepository teachersRepository = new TeachersRepository(Program.GetConnection());
-		public static SubjectsRepository subjectsRepository = new SubjectsRepository(Program.GetConnection());
+		public static StudentsRepository studentsRepository = new StudentsRepository(Model.GetConnection());
+		public static TeachersRepository teachersRepository = new TeachersRepository(Model.GetConnection());
+		public static SubjectsRepository subjectsRepository = new SubjectsRepository(Model.GetConnection());
 
 		public static void FirstCommandProcessing()
 		{
@@ -23,7 +23,7 @@ namespace courseProject
 				}
 				else if (command == "choose")
 				{
-					
+					ConcreteTable();
 				}
 				else
 				{
@@ -34,17 +34,18 @@ namespace courseProject
 
 		public static void ConcreteTable()
 		{
+			Console.WriteLine("Enter the name of the table you want to work with: students, teachers or subjects");
 			string command = Console.ReadLine();
 			switch (command)
 			{
 				case "students":
-
+					StudentsCommandsProceduring();
 					break;
 				case "teachers":
-
+					TeachersCommandsProceduring();
 					break;
 				case "subjects":
-
+					SubjectsCommandsProceduring();
 					break;
 				default:
 					Console.Error.WriteLine("Table does not exist");
@@ -54,11 +55,11 @@ namespace courseProject
 
 		public static void StudentsCommandsProceduring()
 		{
+			Console.WriteLine("Enter your command");
 			string command = Console.ReadLine();
 			string[] subcomms = command.Split(' ');
-			bool check = int.TryParse(subcomms[1], out int id);
 			
-			if (check)
+			if (subcomms.Length == 2 && int.TryParse(subcomms[1], out int id))
 			{
 				switch (subcomms[0])
 				{
@@ -95,10 +96,10 @@ namespace courseProject
 
 		public static void TeachersCommandsProceduring()
 		{
+			Console.WriteLine("Enter your command");
 			string command = Console.ReadLine();
 			string[] subcomms = command.Split(' ');
-			bool check = int.TryParse(subcomms[1], out int id);
-			if (check)
+			if (subcomms.Length == 2 && int.TryParse(subcomms[1], out int id))
 			{
 				switch (subcomms[0])
 				{
@@ -135,10 +136,10 @@ namespace courseProject
 
 		public static void SubjectsCommandsProceduring()
 		{
+			Console.WriteLine("Enter your command");
 			string command = Console.ReadLine();
 			string[] subcomms = command.Split(' ');
-			bool check = int.TryParse(subcomms[1], out int id);
-			if (check)
+			if (subcomms.Length == 2 && int.TryParse(subcomms[1], out int id))
 			{
 				switch (subcomms[0])
 				{
@@ -168,7 +169,6 @@ namespace courseProject
 						break;
 				}
 			}
-			
 		}
 
 		public static Student ShowStudent(int id)

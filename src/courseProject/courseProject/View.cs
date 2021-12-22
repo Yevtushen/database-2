@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace courseProject
 {
 	class View
-	{
+	{		
 		public static void EnrollToSchool()
 		{
 			Console.WriteLine("Enter data");

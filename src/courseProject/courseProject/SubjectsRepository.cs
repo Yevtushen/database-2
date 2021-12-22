@@ -70,9 +70,17 @@ namespace courseProject
 			MySqlCommand command1 = connection.CreateCommand();
 			command1.CommandText = @"INSERT INTO subjects (name) VALUES (@name)";
 			command1.Parameters.AddWithValue("@name", s.name);
-			s.id = (int)command1.ExecuteScalar();
+			try
+			{
+				command1.ExecuteScalar();
+			}
+			catch
+			{
+				connection.Close();
+				return false;
+			}
 			connection.Close();
-			return (s.id != 0);
+			return true;
 		}
 
 		public bool Delete(int id)
