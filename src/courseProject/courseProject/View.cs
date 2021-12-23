@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace courseProject
 {
@@ -219,6 +216,22 @@ namespace courseProject
 			}
 			Controller.GenerateTeachers(number);
 			Console.WriteLine("Finished");
+		}
+
+		public static void FindBySubject()
+		{
+			Console.WriteLine("Enter subject's name:");
+			string subjectName = Console.ReadLine();
+			while (Controller.FindSubject(subjectName) == null)
+			{
+				Console.WriteLine("You were trying to find non-existing subject. Try again.");
+				subjectName = Console.ReadLine();
+			}
+			List<Teacher> teachers = Controller.FindTeachers(Controller.FindSubject(subjectName).id);
+			foreach(Teacher t in teachers)
+			{
+				Console.WriteLine(t.ToString());
+			}
 		}
 
 		public static void AddSubject()

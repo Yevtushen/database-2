@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using MySqlConnector;
 
 namespace courseProject
@@ -16,7 +12,7 @@ namespace courseProject
 			this.connection = connection;
 		}
 
-		public Subject GetSubject(MySqlDataReader reader)
+		private Subject GetSubject(MySqlDataReader reader)
 		{
 			return new Subject
 			{
@@ -59,14 +55,6 @@ namespace courseProject
 		public bool Insert(Subject s)
 		{
 			connection.Open();
-			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"SELECT * FROM subjects WHERE name = @name";
-			command.Parameters.AddWithValue("@name", s.name);
-			MySqlDataReader reader = command.ExecuteReader();
-			if (reader.Read())
-			{
-				return false;
-			}
 			MySqlCommand command1 = connection.CreateCommand();
 			command1.CommandText = @"INSERT INTO subjects (name) VALUES (@name)";
 			command1.Parameters.AddWithValue("@name", s.name);

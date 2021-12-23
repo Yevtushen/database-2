@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MySqlConnector;
 
 namespace courseProject
@@ -16,7 +14,7 @@ namespace courseProject
 			this.connection = connection;
 		}
 
-		public Student GetStudent(MySqlDataReader reader)
+		private Student GetStudent(MySqlDataReader reader)
 		{
 			return new Student
 			{
@@ -98,53 +96,6 @@ namespace courseProject
 			int nChanged = command.ExecuteNonQuery();
 			connection.Close();
 			return (nChanged != 0);
-		}
-
-		/*public void FindByLesserScore(double score)
-		{
-			connection.Open();
-			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"SELECT * IN students WHERE score < @score";
-			command.Parameters.AddWithValue("@score", score);
-		}
-
-		public void FindByGreaterScore(double score)
-		{
-			connection.Open();
-			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"SELECT * IN students WHERE score >= @score";
-			command.Parameters.AddWithValue("@score", score);
-		}*/
-
-		public List<Teacher> GetTheBest()
-		{
-			connection.Open();
-			MySqlCommand command = connection.CreateCommand();
-			command.CommandText = @"SELECT * FROM students WHERE score > 9";
-			MySqlDataReader reader = command.ExecuteReader();
-			List<Student> students = new List<Student>();
-			
-			while (reader.Read())
-			{
-				students.Add(GetStudent(reader));
-			}
-			List<List<Teacher>> lists = new List<List<Teacher>>();
-			foreach (Student s in students)
-			{
-				lists.Add(s.teachers);
-			}
-			var common = lists.First().AsEnumerable();
-			foreach (var list in lists.Skip(1))
-			{
-				common = common.Intersect(list);
-			}
-			List<Teacher> teachers = new List<Teacher>();
-			foreach (Teacher t in common)
-			{
-				teachers.Add(t);
-			}
-			connection.Close();
-			return teachers;
 		}
 
 		public List<Student> GetAllStudents()

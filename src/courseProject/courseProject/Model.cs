@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MySqlConnector;
+﻿using MySqlConnector;
 
 namespace courseProject
 {
@@ -16,6 +11,18 @@ namespace courseProject
 				Server = "localhost",
 				UserID = "root",
 				Password = "qwerty",
+				Database = "schooldb"
+			};
+			return new MySqlConnection(builder.ConnectionString);
+		}
+
+		public static MySqlConnection GetSlaveConnection()
+		{
+			var builder = new MySqlConnectionStringBuilder
+			{
+				Server = "192.168.1.109",
+				UserID = "vic",
+				Password = "vic",
 				Database = "schooldb"
 			};
 			return new MySqlConnection(builder.ConnectionString);

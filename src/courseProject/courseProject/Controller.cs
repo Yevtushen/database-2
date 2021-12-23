@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace courseProject
 {
@@ -12,10 +9,15 @@ namespace courseProject
 		public static TeachersRepository teachersRepository = new TeachersRepository(Model.GetConnection());
 		public static SubjectsRepository subjectsRepository = new SubjectsRepository(Model.GetConnection());
 
+		public static StudentsRepository stRep = new StudentsRepository(Model.GetSlaveConnection());
+		public static TeachersRepository tchRep = new TeachersRepository(Model.GetSlaveConnection());
+		public static SubjectsRepository sbRep = new SubjectsRepository(Model.GetSlaveConnection());
+
 		public static void FirstCommandProcessing()
 		{
 			while (true)
 			{
+				Console.WriteLine("Enter 'exit' if you want to leave, 'choose' if you want to start working with tables or 'draw' to create diagram");
 				string command = Console.ReadLine();
 				if (command == "exit")
 				{
@@ -25,6 +27,11 @@ namespace courseProject
 				{
 					ConcreteTable();
 				}
+				else if (command == "draw")
+				{
+					DrawBars();
+					Console.WriteLine("Done");
+				}
 				else
 				{
 					Console.Error.WriteLine("Unknown command");
@@ -32,7 +39,12 @@ namespace courseProject
 			}
 		}
 
-		public static void ConcreteTable()
+		private static void DrawBars()
+		{
+			Plot.DrawPlotAgeGrade(studentsRepository);
+		}
+
+		private static void ConcreteTable()
 		{
 			Console.WriteLine("Enter the name of the table you want to work with: students, teachers or subjects");
 			string command = Console.ReadLine();
@@ -53,7 +65,7 @@ namespace courseProject
 			}
 		}
 
-		public static void StudentsCommandsProceduring()
+		private static void StudentsCommandsProceduring()
 		{
 			Console.WriteLine("Enter your command");
 			string command = Console.ReadLine();
@@ -94,7 +106,7 @@ namespace courseProject
 			}
 		}
 
-		public static void TeachersCommandsProceduring()
+		private static void TeachersCommandsProceduring()
 		{
 			Console.WriteLine("Enter your command");
 			string command = Console.ReadLine();
@@ -127,6 +139,9 @@ namespace courseProject
 					case "generate":
 						View.GenerateTeachers();
 						break;
+					case "find":
+						View.FindBySubject();
+						break;
 					default:
 						Console.Error.WriteLine("Unknown command");
 						break;
@@ -134,7 +149,7 @@ namespace courseProject
 			}
 		}
 
-		public static void SubjectsCommandsProceduring()
+		private static void SubjectsCommandsProceduring()
 		{
 			Console.WriteLine("Enter your command");
 			string command = Console.ReadLine();
@@ -263,6 +278,11 @@ namespace courseProject
 			{
 				teachersRepository.Insert(t);
 			}
+		}
+
+		public static List<Teacher> FindTeachers(int subjectId)
+		{
+			return teachersRepository.GetTeachersBySubject(subjectId);
 		}
 	}
 }

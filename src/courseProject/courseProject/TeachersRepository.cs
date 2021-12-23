@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MySqlConnector;
 
 namespace courseProject
@@ -16,7 +13,7 @@ namespace courseProject
 			this.connection = connection;
 		}
 
-		public Teacher GetTeacher(MySqlDataReader reader)
+		private Teacher GetTeacher(MySqlDataReader reader)
 		{
 			return new Teacher
 			{
@@ -87,6 +84,20 @@ namespace courseProject
 			return (nChanged != 0);
 		}
 
-
+		public List<Teacher> GetTeachersBySubject(int subjectId)
+		{
+			List<Teacher> teachers = new List<Teacher>();
+			connection.Open();
+			MySqlCommand command = connection.CreateCommand();
+			command.CommandText = @"SELECT * FROM teachers WHERE subject_id = @id";
+			command.Parameters.AddWithValue("@id", subjectId);
+			MySqlDataReader reader = command.ExecuteReader();
+			while (reader.Read())
+			{
+				teachers.Add(GetTeacher(reader));
+			}
+			connection.Close();
+			return teachers;
+		}
 	}
 }

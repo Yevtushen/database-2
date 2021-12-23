@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace courseProject
 {
 	class Subject
 	{
-		public long id;
+		public int id;
 		public string name;
 
 		public List<Teacher> teachers;
@@ -19,6 +15,11 @@ namespace courseProject
 			name = "";
 			teachers = new List<Teacher>();
 			students = new List<Student>();
+		}
+
+		public override string ToString()
+		{
+			return $"{id}: {name}";
 		}
 	}
 }
